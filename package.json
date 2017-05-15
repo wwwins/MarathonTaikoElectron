@@ -1,0 +1,25 @@
+{
+  "name": "marathon-taiko-electron-app",
+  "version": "1.0.0",
+  "description": "A minimal Electron application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/wwwins/MarathonTaikoElectron",
+  "keywords": [
+    "Electron",
+    "isobar",
+    "marathon",
+    "taiko",
+    "demo"
+  ],
+  "author": "wwwins",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "~1.6.2"
+  },
+  "dependencies": {
+    "jquery": "^1.12.4"
+  }
+}
