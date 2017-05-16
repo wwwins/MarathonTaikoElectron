@@ -1,5 +1,6 @@
 $(function(){
 
+  var vsno = 0;
   var PlayRate = 0.25;
   var myName = "Client"
   var socket = io('http://localhost:3000');
@@ -38,6 +39,13 @@ $(function(){
     }
     if (cmd=='pauseall') {
       pauseallVideo();
+    }
+    if (cmd=='addvideo') {
+      vsno++;
+      addVideo("video"+vsno);
+    }
+    if (cmd=='rmvideo') {
+      removeVideo();
     }
   });
 
@@ -99,6 +107,21 @@ $(function(){
     // $('#').each(function(){$(this).playbackRate = speedRate;});
     $('#'+vid).get(0).playbackRate = speedRate;
   }
-  hideAll();
+
+  // hideAll();
+  // for (var i=0;i<10; i++) {
+  //   addVideo("video"+i);
+  // }
 
 });
+
+// 加入影片
+function addVideo(vid) {
+  var video_w = 640;
+  var video_h = 360;
+  var px = (Math.random() * ($(document).width() - video_w)).toFixed();
+  var py = (Math.random() * 100).toFixed();
+  var randw = ((video_w * 0.5) + Math.random() * (video_w * 0.5)).toFixed();
+  console.log("("+px+","+py+"),"+randw);
+  $('.container').append('<div style="position:absolute;left:'+px+'px;bottom:'+py+'px"><video id="'+vid+'" width="'+randw+'" src="video/test2M.webm" autoplay="" loop=""></video></div>');
+}
