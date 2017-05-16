@@ -23,6 +23,11 @@
       position: absolute;
       left: 400px;
     }
+    .audio-visualizer {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+    }
     .fixed1 {
       position: fixed;
       bottom: 0px;
@@ -31,7 +36,12 @@
     </style>
   </head>
     <body>
-      <canvas class="visualizer" width="300" height="100"></canvas>
+      node.js <script>document.write(process.versions.chrome)</script>-
+      Chromium <script>document.write(process.versions.chrome)</script>-
+      Electron <script>document.write(process.versions.electron)</script><br>
+      <div class="audio-visualizer">
+        <canvas id="visualizer" width="300" height="100"></canvas>
+      </div>
       <script>
         // fixed: Uncaught ReferenceError : $ is not defined
         // http://ourcodeworld.com/articles/read/202/how-to-include-and-use-jquery-in-electron-framework
@@ -39,8 +49,8 @@
       </script>
       <script src="vendor/socket.io.js"></script>
       <script src="index.js"></script>
-      <script src="microphone.js"></script>
     <div class="container">
+<!--
       <div class="level1">
         <video id="video1" width="640" height="360" src="video/test2M.webm" loop=""></video>
       </div>
@@ -49,20 +59,22 @@
       </div>
 
       <div class="fixed1">
-        <video id="video3" width="640" height="360" autoplay="" src="video/lossless.webm" loop=""></video>
+        <video id="video3" width="640" height="360" src="video/test2M.webm" loop=""></video>
       </div>
 
       <div class="level3">
         <video id="video4" width="640" height="360" src="video/test2M.webm" loop=""></video>
       </div>
       <div style="position:absolute;left:100px">
-        <video id="video5" width="640" height="360" src="video/lossless.webm" loop=""></video>
+        <video id="video5" width="640" height="360" src="video/test2M.webm" loop=""></video>
       </div>
+ -->
     </div>
   </body>
 
   <script>
     // You can also require other files to run in this process
     require('./renderer.js')
+    require('./microphone.js')
   </script>
 </html>
