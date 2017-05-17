@@ -1,7 +1,11 @@
+const ENABLE_APNG = 0;
+const MAX_VIDEO = 7;
+const PLAY_RATE = 0.25;
+var speedRate = 1.0;
+var vsno = 0;
+
 $(function(){
 
-  var vsno = 0;
-  var PlayRate = 0.25;
   var myName = "Client"
   var socket = io('http://localhost:3000');
 
@@ -42,17 +46,33 @@ $(function(){
     }
     if (cmd=='addvideo') {
       vsno++;
-      // addVideo("video"+vsno);
-      addAnim("video"+vsno);
+      if (vsno < MAX_VIDEO) {
+        if (ENABLE_APNG) {
+          addAnim("video"+vsno);
+        }
+        else {
+          addVideo("video"+vsno);
+        }
+      }
     }
     if (cmd=='rmvideo') {
       removeVideo();
     }
     if (cmd=='speedup') {
-      speedupAll();
+      if (ENABLE_APNG) {
+        speedupAll();
+      }
+      else {
+        playallFaster();
+      }
     }
     if (cmd=='slowdown') {
-      slowdownAll();
+      if (ENABLE_APNG) {
+        slowdownAll();
+      }
+      else {
+        playallSlower();
+      }
     }
   });
 
@@ -81,10 +101,11 @@ $(function(){
     $('video').hide();
   }
 
-  var speedRate = 1.0;
   function playallFaster() {
-    speedRate = speedRate + PlayRate;
-    $('video').each(function(){$(this).playbackRate = speedRate;});
+    speedRate = speedRate + PLAY_RATE;
+    $('video').each(function(){
+      this.playbackRate = speedRate;
+    });
     // $('video').get(0).playbackRate = speedRate;
   }
 
@@ -93,14 +114,16 @@ $(function(){
       speedRate = 1.0
     }
     else {
-      speedRate = speedRate - PlayRate;
+      speedRate = speedRate - PLAY_RATE;
     }
-    $('video').each(function(){$(this).playbackRate = speedRate;});
+    $('video').each(function(){
+      this.playbackRate = speedRate;
+    });
     // $('video').get(0).playbackRate = speedRate;
   }
 
   function playFaster(vid) {
-    speedRate = speedRate + PlayRate;
+    speedRate = speedRate + PLAY_RATE;
     $('#'+vid).get(0).playbackRate = speedRate;
   }
 
@@ -109,7 +132,7 @@ $(function(){
       speedRate = 1.0
     }
     else {
-      speedRate = speedRate - PlayRate;
+      speedRate = speedRate - PLAY_RATE;
     }
     // $('#').each(function(){$(this).playbackRate = speedRate;});
     $('#'+vid).get(0).playbackRate = speedRate;
@@ -154,23 +177,25 @@ $(function(){
   //   console.log("playTime:"+anim.playTime);
   // });
   // 類似上面做法
-  APNG.animateContext("image/elephant.png", document.querySelector('#canvas_apng').getContext("2d")).then(function(anim){
-    anim.playbackRate = 1.5;
-  });
+  // APNG.animateContext("image/elephant.png", document.querySelector('#canvas_apng').getContext("2d")).then(function(anim){
+  //   anim.playbackRate = 1.5;
+  // });
 
   // 先產生 20 個 div/img
-  randDiv(20);
+  if (ENABLE_APNG) {
+    randDiv(MAX_VIDEO);
+  }
 });
 
 // 加入影片
 function addVideo(vid) {
-  var video_w = 640;
-  var video_h = 360;
+  var video_w = 514;
+  var video_h = 541;
   var px = (Math.random() * ($(document).width() - video_w)).toFixed();
-  var py = (Math.random() * 100).toFixed();
+  var py = (Math.random() * 10).toFixed();
   var randw = ((video_w * 0.5) + Math.random() * (video_w * 0.5)).toFixed();
   console.log("("+px+","+py+"),"+randw);
-  $('.container').append('<div style="position:absolute;left:'+px+'px;bottom:'+py+'px"><video id="'+vid+'" width="'+randw+'" src="video/test2M.webm" autoplay="" loop=""></video></div>');
+  $('.container').append('<div style="position:absolute;left:'+px+'px;bottom:'+py+'px"><video id="'+vid+'" width="'+randw+'" src="video/taiko.webm" autoplay="" loop=""></video></div>');
 }
 
 var video_map = new Map();
@@ -187,10 +212,8 @@ function addAnim(aid) {
   })
 }
 
-var PlayRate = 0.25;
-var speedRate = 1.0;
 function speedupAll() {
-  speedRate = speedRate + PlayRate;
+  speedRate = speedRate + PLAY_RATE;
   video_map.forEach(function(value,key){
     value.playbackRate = speedRate;
   });
@@ -201,7 +224,7 @@ function slowdownAll() {
     speedRate = 1.0
   }
   else {
-    speedRate = speedRate - PlayRate;
+    speedRate = speedRate - PLAY_RATE;
   }
   video_map.forEach(function(value,key){
     value.playbackRate = speedRate;
