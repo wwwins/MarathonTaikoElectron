@@ -11,7 +11,7 @@ function callback(stream) {
     var ctx = new AudioContext();
     var mic = ctx.createMediaStreamSource(stream);
     var analyser = ctx.createAnalyser();
-    analyser.fftSize = 256;
+    analyser.fftSize = 1024;
 
     // gradient color for bar
     var gradient = canvasCtx.createLinearGradient(0, 0, 0, 300);
@@ -29,7 +29,6 @@ function callback(stream) {
     var barWidth = (w / bufferLength) * 2.5;
     var barHeight;
     var frame_cnt = 0;
-    var animation_sno = 0;
 
     console.log(w, h);
 
@@ -60,8 +59,15 @@ function callback(stream) {
           frame_cnt++;
           console.log("cnt="+frame_cnt+",avg="+avg);
           if ((frame_cnt % 10) == 9) {
-            animation_sno++;
-            addVideo("animation"+animation_sno);
+            vsno++;
+            if (vsno < MAX_VIDEO) {
+              if (ENABLE_APNG) {
+                addAnim("video"+vsno);
+              }
+              else {
+                addVideo("video"+vsno);
+              }
+            }
           }
         }
 
