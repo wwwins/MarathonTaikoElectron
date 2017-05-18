@@ -1,20 +1,21 @@
 const ENABLE_APNG = 0;
 const MAX_VIDEO = 7;
 const PLAY_RATE = 0.25;
+var arrVideoPos = [];
 var speedRate = 1.0;
 var vsno = 0;
+
 
 $(function(){
 
   var myName = "Client"
-  var socket = io('http://localhost:3000');
+  var socket = io('http://ioserver.isobar.com.tw:3000');
 
-  socket.on('connect', function(){
-    console.log(myName+' connect to server')
+  socket.on('connect', () => {
+    console.log(myName+' connect to server');
     socket.emit('AddUser', myName);
-
   });
-  socket.on('disconnect', function(){});
+  socket.on('disconnect', () => {});
   socket.on('ALL', function(data){
     console.log('all message: ' + data);
     var cmd = data.split(' ')[0].toLowerCase();
@@ -46,7 +47,7 @@ $(function(){
     }
     if (cmd=='addvideo') {
       vsno++;
-      if (vsno < MAX_VIDEO) {
+      if (vsno <= MAX_VIDEO) {
         if (ENABLE_APNG) {
           addAnim("video"+vsno);
         }
@@ -185,17 +186,53 @@ $(function(){
   if (ENABLE_APNG) {
     randDiv(MAX_VIDEO);
   }
+  // 產生 video_pos
+  genVideoPos();
 });
 
 // 加入影片
+// function addVideo(vid) {
+//   var video_w = 514;
+//   var video_h = 541;
+//   var px = (Math.random() * ($(document).width() - video_w)).toFixed();
+//   var py = (Math.random() * 10).toFixed();
+//   var randw = ((video_w * 0.5) + Math.random() * (video_w * 0.5)).toFixed();
+//   console.log("("+px+","+py+"),"+randw);
+//   $('.container').append('<div style="position:absolute;left:'+px+'px;bottom:'+py+'px"><video id="'+vid+'" width="'+randw+'" src="video/taiko.webm" autoplay="" loop=""></video></div>');
+// }
 function addVideo(vid) {
-  var video_w = 514;
-  var video_h = 541;
-  var px = (Math.random() * ($(document).width() - video_w)).toFixed();
-  var py = (Math.random() * 10).toFixed();
-  var randw = ((video_w * 0.5) + Math.random() * (video_w * 0.5)).toFixed();
-  console.log("("+px+","+py+"),"+randw);
-  $('.container').append('<div style="position:absolute;left:'+px+'px;bottom:'+py+'px"><video id="'+vid+'" width="'+randw+'" src="video/taiko.webm" autoplay="" loop=""></video></div>');
+  var video_w = 483;
+  var video_h = 452;
+  var px = arrVideoPos.splice(Math.random() * arrVideoPos.length | 0, 1)[0];
+  // var px = arrVideoPos[vsno-1];
+  var py = 0;
+  console.log("("+px+","+py+"):"+vid);
+  if (vsno==MAX_VIDEO) {
+    genVideoPos();
+    $('video').each( function () {
+      $(this).fadeOut(200);
+    });
+    // video play again
+    if ($('#'+vid).length) {
+      $('#'+vid).show();
+      $('#'+vid)[0].play();
+    }
+    else {
+      $('.container').append('<div style="position:absolute;left:'+0+'px;bottom:'+0+'px"><video id="'+vid+'" width="'+1024+'" src="video/6taiko.webm" autoplay=""></video></div>');
+    }
+    $('#'+vid).one('ended',function(){
+      $(this).hide();
+      vsno = 0;
+    });
+  }
+  else {
+    if ($('#'+vid).length) {
+      $('#'+vid).show();
+    }
+    else {
+      $('.container').append('<div style="position:absolute;left:'+px+'px;bottom:'+py+'px"><video id="'+vid+'" width="'+video_w+'" src="video/taiko.webm" autoplay="" loop=""></video></div>');
+    }
+  }
 }
 
 var video_map = new Map();
@@ -229,4 +266,14 @@ function slowdownAll() {
   video_map.forEach(function(value,key){
     value.playbackRate = speedRate;
   });
+}
+
+function genVideoPos() {
+  arrVideoPos = [];
+  var px = 0;
+  var i = MAX_VIDEO-1;
+  while (i--) {
+    px = -158 + 164*i;
+    arrVideoPos.push(px);
+  }
 }
