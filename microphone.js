@@ -1,3 +1,5 @@
+const DETECT_VOLUME = 96;
+
 navigator.getUserMedia = navigator.getUserMedia
                        || navigator.webkitGetUserMedia
                        || navigator.mozGetUserMedia;
@@ -11,7 +13,7 @@ function callback(stream) {
     var ctx = new AudioContext();
     var mic = ctx.createMediaStreamSource(stream);
     var analyser = ctx.createAnalyser();
-    analyser.fftSize = 1024;
+    analyser.fftSize = 512;
 
     // gradient color for bar
     var gradient = canvasCtx.createLinearGradient(0, 0, 0, 300);
@@ -55,12 +57,12 @@ function callback(stream) {
         requestAnimationFrame(draw);
         analyser.getByteFrequencyData(data);
         var avg = getAverageVolume(data);
-        if (avg>150) {
+        if (avg>DETECT_VOLUME) {
           frame_cnt++;
-          console.log("cnt="+frame_cnt+",avg="+avg);
-          if ((frame_cnt % 10) == 9) {
+          // console.log("cnt="+frame_cnt+",avg="+avg);
+          if ((frame_cnt % 10) == 0) {
             vsno++;
-            if (vsno < MAX_VIDEO) {
+            if (vsno <= MAX_VIDEO) {
               if (ENABLE_APNG) {
                 addAnim("video"+vsno);
               }
