@@ -1,4 +1,4 @@
-const DETECT_VOLUME = 96;
+const DETECT_VOLUME = 64;
 
 navigator.getUserMedia = navigator.getUserMedia
                        || navigator.webkitGetUserMedia
@@ -17,9 +17,9 @@ function callback(stream) {
 
     // gradient color for bar
     var gradient = canvasCtx.createLinearGradient(0, 0, 0, 300);
-    gradient.addColorStop(1, '#0f0');
-    gradient.addColorStop(0.5, '#ff0');
-    gradient.addColorStop(0, '#f00');
+    gradient.addColorStop(0, '#ff0');
+    gradient.addColorStop(0.5, '#f00');
+    gradient.addColorStop(1, '#fff');
 
     // 分析 mic 進來的聲音
     mic.connect(analyser);
