@@ -1,10 +1,11 @@
 {
-  "name": "marathon-taiko-electron-app",
+  "name": "DAN2017",
   "version": "1.0.0",
   "description": "A minimal Electron application",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-packager --overwrite . && cp ~/Downloads/dan.icns DAN-darwin-x64/DAN.app/Contents/Resources/electron.icns"
   },
   "repository": "https://github.com/wwwins/MarathonTaikoElectron",
   "keywords": [
