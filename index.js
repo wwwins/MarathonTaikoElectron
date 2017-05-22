@@ -75,6 +75,14 @@ $(function(){
         playallSlower();
       }
     }
+    if (cmd=='speedreset') {
+      if (ENABLE_APNG) {
+        //
+      }
+      else {
+        resetAllSpeed();
+      }
+    }
   });
 
   function playVideo(vid) {
@@ -139,6 +147,13 @@ $(function(){
     $('#'+vid).get(0).playbackRate = speedRate;
   }
 
+  function resetAllSpeed() {
+    speedRate = 1.0;
+    $('video').each(function(){
+      this.playbackRate = speedRate;
+    });
+  }
+
   // <div class="level3">
   //   <img src="image/animated24.png" width="640" height="360">
   // </div>
@@ -155,6 +170,24 @@ $(function(){
       $('.container').append('<div style="position:absolute;left:'+px+'px;bottom:'+py+'px"><img id="'+vid+'" width="'+randw+'" height="'+randh+'" src="image/animated24.png"></div>');
     }
     $('img').hide();
+  }
+
+  function genDiv(n) {
+    var video_w = 483;
+    var video_h = 452;
+    var px = 0;
+    var i = MAX_VIDEO-1;
+    while (i--) {
+      px = -158 + 164*i;
+    }
+    for (var i = 1; i<n ; i++) {
+      var vid = "video" + i;
+      var px = -158 + 164*(i-1);
+      var py = 0;
+      $('.container').append('<div style="position:absolute;left:'+px+'px;bottom:'+py+'px"><img id="'+vid+'" width="'+video_w+'" height="'+video_h+'" src="image/animated24.png"></div>');
+    }
+    $('img').hide();
+
   }
 
   // hideAll();
@@ -184,10 +217,13 @@ $(function(){
 
   // 先產生 20 個 div/img
   if (ENABLE_APNG) {
-    randDiv(MAX_VIDEO);
+    // randDiv(MAX_VIDEO);
+    genDiv(MAX_VIDEO);
   }
-  // 產生 video_pos
-  genVideoPos();
+  else {
+    // 產生 video_pos
+    genVideoPos();
+  }
 });
 
 // 加入影片
@@ -203,12 +239,12 @@ $(function(){
 function addVideo(vid) {
   var video_w = 483;
   var video_h = 452;
-  var px = arrVideoPos.splice(Math.random() * arrVideoPos.length | 0, 1)[0];
-  // var px = arrVideoPos[vsno-1];
+  // var px = arrVideoPos.splice(Math.random() * arrVideoPos.length | 0, 1)[0];
+  var px = arrVideoPos[MAX_VIDEO-vsno-1];
   var py = 0;
   console.log("("+px+","+py+"):"+vid);
   if (vsno==MAX_VIDEO) {
-    genVideoPos();
+    //genVideoPos();
     $('video').each( function () {
       $(this).fadeOut(200);
     });
