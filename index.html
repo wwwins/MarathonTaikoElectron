@@ -6,8 +6,8 @@
     <style>
     .container {
       position: absolute;
-      width: 1920px;
-      height: 400px;
+      width: 1024px;
+      height: 768px;
       bottom: 0;
     }
     .level1 {
@@ -25,31 +25,55 @@
     }
     .audio-visualizer {
       position: absolute;
-      top: 0px;
       left: 0px;
+      bottom: 0px;
     }
     .fixed1 {
       position: fixed;
       bottom: 0px;
       right: 0px;
     }
+    .container_apng {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+    }
+
     </style>
   </head>
-    <body>
+    <body style="overflow: hidden">
       node.js <script>document.write(process.versions.chrome)</script>-
       Chromium <script>document.write(process.versions.chrome)</script>-
       Electron <script>document.write(process.versions.electron)</script><br>
-      <div class="audio-visualizer">
-        <canvas id="visualizer" width="300" height="100"></canvas>
-      </div>
+
       <script>
         // fixed: Uncaught ReferenceError : $ is not defined
         // http://ourcodeworld.com/articles/read/202/how-to-include-and-use-jquery-in-electron-framework
         window.$ = window.jQuery = require('jquery');
       </script>
       <script src="vendor/socket.io.js"></script>
+      <!-- <script src="vendor/apng-canvas.min.js"></script> -->
       <script src="index.js"></script>
     <div class="container">
+      <div class="audio-visualizer">
+        <canvas id="visualizer" width="1024" height="100"></canvas>
+      </div>
+<!--
+      <div class="container_apng">
+        <canvas id="canvas_apng" width="480" height="400"></canvas>
+      </div>
+ -->
+<!--
+      <div class="level1">
+        <img src="image/animated24.png" width="320" height="180">
+      </div>
+      <div class="level2">
+        <img src="image/animated24.png" width="640" height="360">
+      </div>
+      <div class="level3">
+        <img src="image/animated24.png" width="640" height="360">
+      </div>
+ -->
 <!--
       <div class="level1">
         <video id="video1" width="640" height="360" src="video/test2M.webm" loop=""></video>
